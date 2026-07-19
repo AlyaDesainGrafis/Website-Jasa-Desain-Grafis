@@ -430,7 +430,8 @@
         <a href="#">Layanan</a>
         <a href="#">Tentang</a>
         <a href="#">Testimoni</a>
-        <a href="#" class="nav-cta"><i class="fas fa-paper-plane" style="margin-right: 6px;"></i>Hubungi</a>
+        <!-- Tombol Hubungi di navbar: langsung ke WhatsApp -->
+        <a href="#" class="nav-cta" id="navHubungi"><i class="fas fa-paper-plane" style="margin-right: 6px;"></i>Hubungi</a>
       </div>
     </nav>
 
@@ -442,8 +443,10 @@
       <h1>Alya Desain <span>Grafis</span></h1>
       <p>Kami menghadirkan Jasa Desain Grafis yang profesional,pelayanan ramah,respon cepat,hasil pengerjaan cepat dan sesuai keinginan,dan harga terjangkau.</p>
       <div class="hero-buttons">
-        <a href="#" class="btn-primary"><i class="fas fa-rocket"></i> Mulai</a>
-        <a href="#" class="btn-outline"><i class="fas fa-phone-alt"></i> Konsultasi desain</a>
+        <!-- Tombol Mulai: tetap sebagai internal link (bisa diarahkan ke #) -->
+        <a href="#" class="btn-primary" id="btnMulai"><i class="fas fa-rocket"></i> Mulai</a>
+        <!-- Tombol Konsultasi desain: langsung ke Instagram -->
+        <a href="#" class="btn-outline" id="btnKonsultasi"><i class="fas fa-phone-alt"></i> Konsultasi desain</a>
       </div>
     </section>
 
@@ -511,6 +514,7 @@
         &copy; 2026 Alya Studio · Desain grafis profesional
       </div>
       <div class="footer-social">
+        <!-- Ikon sosial media: tetap menggunakan link #, tapi bisa ditambahkan link asli jika diperlukan -->
         <a href="#"><i class="fab fa-behance"></i></a>
         <a href="#"><i class="fab fa-dribbble"></i></a>
         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -518,24 +522,69 @@
       </div>
     </footer>
   </div>
-  <!-- sedikit JS interaksi (hanya smooth scroll & efek) -->
+
+  <!-- JavaScript untuk menangani klik tombol -->
   <script>
     (function() {
-      // menambahkan kelas 'visible' pada elemen yang muncul di viewport (opsional)
-      // namun karena sudah pakai fade-in di awal, kita tambahkan efek small hover pada card
-      const cards = document.querySelectorAll('.service-card');
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', function(e) {
-          this.style.transition = '0.2s';
-        });
-      });
+      // --- Konfigurasi ---
+      // Ganti dengan nomor WhatsApp yang diinginkan (gunakan kode negara, tanpa tanda '+')
+      const WA_NUMBER = '6285747430079'; 
+      // Ganti dengan username Instagram tujuan (tanpa '@')
+      const IG_USERNAME = 'rzl.venom'; 
 
-      // small interaction: nav link smooth (hanya prevent default untuk demo)
-      document.querySelectorAll('.nav-links a, .btn-primary, .btn-outline, .footer-social a, .hero-buttons a').forEach(link => {
+      // --- Fungsi untuk membuka WhatsApp ---
+      function bukaWhatsApp() {
+        const url = `https://whatsapp.com/dl/${WA_NUMBER}?text=Halo%2C%20saya%20tertarik%20dengan%20jasa%20desain%20grafis%20Anda.`;
+        window.open(url, '_blank');
+      }
+
+      // --- Fungsi untuk membuka Instagram ---
+      function bukaInstagram() {
+        const url = `https://www.instagram.com/rzl.venom?igsh=OGs5N3R0YnRtYXNo${IG_USERNAME}/`;
+        window.open(url, '_blank');
+      }
+
+      // --- Dapatkan elemen tombol ---
+      const navHubungi = document.getElementById('navHubungi');
+      const btnKonsultasi = document.getElementById('btnKonsultasi');
+      const btnMulai = document.getElementById('btnMulai');
+
+      // --- Event listener untuk tombol "Hubungi" di navbar (WhatsApp) ---
+      if (navHubungi) {
+        navHubungi.addEventListener('click', function(e) {
+          e.preventDefault();
+          bukaWhatsApp();
+        });
+      }
+
+      // --- Event listener untuk tombol "Konsultasi desain" (Instagram) ---
+      if (btnKonsultasi) {
+        btnKonsultasi.addEventListener('click', function(e) {
+          e.preventDefault();
+          bukaInstagram();
+        });
+      }
+
+      // --- Event listener untuk tombol "Mulai" (opsional: bisa diarahkan ke WA atau halaman lain) ---
+      if (btnMulai) {
+        btnMulai.addEventListener('click', function(e) {
+          e.preventDefault();
+          // Contoh: arahkan ke WhatsApp juga, atau ke halaman kontak
+          // Bisa diubah sesuai keinginan
+          bukaWhatsApp(); 
+          // Jika ingin ke Instagram, ganti dengan bukaInstagram();
+        });
+      }
+
+      // --- Efek tambahan: animasi hover pada semua link dengan href="#", agar tidak reload ---
+      document.querySelectorAll('a[href="#"]').forEach(link => {
         link.addEventListener('click', function(e) {
-          if (this.getAttribute('href') === '#') {
+          // Jika link bukan salah satu yang sudah di-handle di atas, kita hanya prevent default
+          // tapi kita biarkan saja karena sudah di-handle khusus untuk tombol tertentu
+          // Untuk link lain (seperti Layanan, Tentang, Testimoni) kita biarkan tetap di # agar tidak reload
+          if (this.id !== 'navHubungi' && this.id !== 'btnKonsultasi' && this.id !== 'btnMulai') {
             e.preventDefault();
-            // animasi kecil untuk feedback
+            // efek kecil
             this.style.transition = '0.1s';
             this.style.transform = 'scale(0.97)';
             setTimeout(() => { this.style.transform = 'scale(1)'; }, 100);
@@ -543,8 +592,10 @@
         });
       });
 
-      // hero badge / efek kecil
-      console.log('Alya Studio — Desain Grafis.');
+      // --- Smooth scroll untuk link navigasi (jika ingin diaktifkan) ---
+      // (tidak diterapkan karena semua link masih #)
+
+      console.log('Alya Studio — Tombol aktif: WhatsApp & Instagram.');
     })();
   </script>
 </body>
